@@ -20,7 +20,6 @@ JSON_object = json.loads(the_page.decode('utf-8'))
 
 pm25_level =  (JSON_object["currentMeasurements"]["pm25"])
 
-
 if pm25_level <= 11:
     level_str = "Low 1"
     color = "#66FF99"
@@ -54,11 +53,8 @@ else:
 
 percentage = pm25_level / PM25_MAX * 100
 percentage_str = '{0:.1f}'.format(percentage)
-subject = "Air quality level is currently " + percentage_str + "% of maximum level (PM 2.5)."
-print (subject)
+body = "Air quality level is currently '" +level_str+ "', which is " + percentage_str + "% of maximum level (PM 2.5)."
 
-# me == my email address
-# you == recipient's email address
 me = GMAIL_USER
 you = RECIPIENT
 
@@ -69,7 +65,7 @@ msg['From'] = me
 msg['To'] = you
 
 # Create the body of the message (a plain-text and an HTML version).
-text = subject
+text = body
 html = """\
 <html>
   <head></head>
@@ -83,9 +79,8 @@ html = """\
     </table>
   </body>
 </html>
-""" % (color, subject)
+""" % (color, body)
 
-print (html)
 # Record the MIME types of both parts - text/plain and text/html.
 part1 = MIMEText(text, 'plain')
 part2 = MIMEText(html, 'html')
@@ -95,13 +90,10 @@ part2 = MIMEText(html, 'html')
 # the HTML message, is best and preferred.
 msg.attach(part1)
 msg.attach(part2)
-# Send the message via SMTP server.
 mail = smtplib.SMTP('smtp.gmail.com', 587)
 
 mail.ehlo()
-
 mail.starttls()
-
 mail.login(GMAIL_USER, GMAIL_PASS)
 mail.sendmail(me, you, msg.as_string())
 mail.quit()
