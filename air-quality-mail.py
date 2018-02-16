@@ -6,7 +6,7 @@ from email.mime.text import MIMEText
 
 GMAIL_USER = "anon@anon.com"
 GMAIL_PASS = "topsecret"
-RECIPIENT = "myfriends@gmail.com"
+RECIPIENTS = ["myfriend1@gmail.com", "myfriend2@gmail.com"]
 PM25_MAX = 25
 API_KEY = 'very-top-secret'
 
@@ -56,13 +56,13 @@ percentage_str = '{0:.1f}'.format(percentage)
 body = "Air quality level is currently '" +level_str+ "', which is " + percentage_str + "% of maximum level (PM 2.5)."
 
 me = GMAIL_USER
-you = RECIPIENT
+you = RECIPIENTS
 
 # Create message container - the correct MIME type is multipart/alternative.
 msg = MIMEMultipart('alternative')
 msg['Subject'] = "Air quality currently " + percentage_str + "% of norm"
 msg['From'] = me
-msg['To'] = you
+msg['To'] = ", ".join(you)
 
 # Create the body of the message (a plain-text and an HTML version).
 text = body
