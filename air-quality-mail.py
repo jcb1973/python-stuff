@@ -4,11 +4,15 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-GMAIL_USER = "anon@anon.com"
-GMAIL_PASS = "topsecret"
-RECIPIENTS = ["myfriend1@gmail.com", "myfriend2@gmail.com"]
 PM25_MAX = 25
-API_KEY = 'very-top-secret'
+
+with open('config.txt') as f:
+    conf = dict([line.split() for line in f])
+
+GMAIL_USER = (conf["GMAIL_USER"])
+RECIPIENTS = (conf["RECIPIENTS"].split(","))
+API_KEY = (conf["API_KEY"])
+GMAIL_PASS = (conf["GMAIL_PASS"])
 
 req = urllib.request.Request('https://airapi.airly.eu/v1/mapPoint/measurements?latitude=49.97031&longitude=20.42504')
 req.add_header('Accept', 'application/json')
