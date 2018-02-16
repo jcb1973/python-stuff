@@ -13,8 +13,11 @@ GMAIL_USER = (conf["GMAIL_USER"])
 RECIPIENTS = (conf["RECIPIENTS"].split(","))
 API_KEY = (conf["API_KEY"])
 GMAIL_PASS = (conf["GMAIL_PASS"])
+AIRLY_URL = "https://airapi.airly.eu/v1/mapPoint/measurements"
+LATITUDE = "49.97031"
+LONGITUDE = "20.42504"
 
-req = urllib.request.Request('https://airapi.airly.eu/v1/mapPoint/measurements?latitude=49.97031&longitude=20.42504')
+req = urllib.request.Request(AIRLY_URL + "?latitude=&" + LATITUDE + "longitude=" + LONGITUDE)
 req.add_header('Accept', 'application/json')
 req.add_header('apikey', API_KEY)
 
