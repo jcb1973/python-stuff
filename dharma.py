@@ -2,6 +2,19 @@ import urllib
 import urllib.request
 from bs4 import BeautifulSoup
 import re
+from twilio.rest import Client
+
+with open('config.txt') as f:
+    conf = dict([line.split() for line in f])
+
+TOKEN = (conf["TOKEN"])
+SID = (conf["SID"])
+TWILIOFROM = (conf["TWILIOFROM"])
+TWILIOTO = (conf["TWILIOTO"])
+
+account_sid = SID
+auth_token = TOKEN
+client = Client(account_sid, auth_token)
 
 def upperfirst(x):
 	return x[0].upper() + x[1:]
@@ -22,7 +35,13 @@ else:
 	print ("no match")
 
 cleantext = BeautifulSoup(html_quote, "lxml").text
-print (cleantext)
 n = author.search(mystring)
 if n:
-	print (upperfirst(n.group(1)))
+	a = (upperfirst(n.group(1)))
+
+message = cleantext + " (" + a + ")" 
+
+client.api.account.messages.create(
+    to=TWILIOTO,
+    from_=TWILIOFROM,
+    body=message)
