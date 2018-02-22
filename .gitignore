@@ -1,3 +1,4 @@
 # text files
 *.txt
 *.csv
+*.env
