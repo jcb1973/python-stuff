@@ -30,7 +30,7 @@ txns = str(sys.argv[1])
 solution = re.compile(r"""
 	(\d{4}.\d{2}.\d{2}\s)
 	(\d{4}.\d{2}.\d{2}\s)
-	(\d*\s)
+	(\S*?\s{1})
 	(.*\s)
 	(.*)
 	(\s.*)
@@ -48,7 +48,7 @@ with open(txns, 'r', encoding='utf-8') as txnsFile:
 # formatting
 model_cell = pygsheets.Cell('D1')
 model_cell.horizontal_alignment=custom_types.HorizontalAlignment.LEFT
-pygsheets.DataRange('D1', 'D%s' % worksheet.rows, worksheet=worksheet).apply_format(model_cell)
+pygsheets.DataRange('C1', 'D%s' % worksheet.rows, worksheet=worksheet).apply_format(model_cell)
 
 model_cell = pygsheets.Cell('A1')
 model_cell.set_text_format("bold", True)
