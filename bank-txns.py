@@ -4,8 +4,14 @@
 
 import sys
 import re
+import pygsheets
 
-#print(sys.stdout.encoding)
+with open('config.txt') as f:
+    conf = dict([line.split() for line in f])
+
+sheet = (conf["SHEET"])
+gc = pygsheets.authorize()  
+sh = gc.open_by_key(sheet)
 
 txns = str(sys.argv[1])
 
