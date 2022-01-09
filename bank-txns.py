@@ -22,6 +22,8 @@ worksheet = sh.worksheet('title',newsheet)
 
 # set the titles in the first row
 worksheet.update_row(worksheet.rows, headers)
+model_cell = pygsheets.Cell('A1')
+model_cell.set_text_format("bold", True)
 
 # what file are we looking for
 txns = str(sys.argv[1])
@@ -43,3 +45,5 @@ with open(txns, 'r', encoding='utf-8') as txnsFile:
 
 		worksheet.add_rows(1) 
 		worksheet.update_row(worksheet.rows, list(matches[0]))
+
+pygsheets.DataRange(start='A1', end='I1', worksheet=worksheet).apply_format(model_cell)
