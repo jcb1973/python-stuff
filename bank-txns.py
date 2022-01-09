@@ -5,6 +5,7 @@
 import sys
 import re
 import pygsheets
+from datetime import date
 
 with open('config.txt') as f:
     conf = dict([line.split() for line in f])
@@ -12,6 +13,12 @@ with open('config.txt') as f:
 sheet = (conf["SHEET"])
 gc = pygsheets.authorize()  
 sh = gc.open_by_key(sheet)
+
+# create a worksheet for the current month
+today = date.today()
+newsheet = today.strftime("%B %Y")
+print("newsheet =", newsheet)
+sh.add_worksheet(newsheet,rows=250, cols=9) 
 
 txns = str(sys.argv[1])
 
