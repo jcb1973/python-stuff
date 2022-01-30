@@ -6,17 +6,23 @@ import pygsheets
 import random
 from pygsheets import custom_types
 from datetime import date
+import argparse
 
 headers = ["Bokföringsdatum", "Valutadatum", "Verifikationsnummer", "Text/mottagare ", "Belopp", "Saldo", "Invoice number", "VAT", "Notes"]		
 
-# what file are we looking for, are we in testing mode
-txns = str(sys.argv[1])
-testing_mode = str(sys.argv[2])
+parser = argparse.ArgumentParser("Puts values from CSV file in spreadsheet (specified in 'config.txt')")
+parser.add_argument('--file', required=True, help="File to work with")
+parser.add_argument('--testing', default=True, help="Testing mode - True | False")
+args = parser.parse_args()
+
+if args.verbose:
+    print(f"Args are {args.file} and {args.testing}")	
+    exit
 
 with open('config.txt') as f:
     conf = dict([line.split() for line in f])
 
-if (testing_mode == "TEST"):
+if (args.testing):
 	print ("testing mode only")
 	sheet = (conf["TESTING-SHEET"])
 else:
@@ -27,7 +33,7 @@ gc = pygsheets.authorize(client_secret='client_secret.json',)
 sh = gc.open_by_key(sheet)
 
 # create a worksheet for the current month and switch to it
-if (testing_mode == "TEST"):
+if (args.testing):
 	new_sheet_name = date.today().strftime("%B %Y") + str(random.randint(1, 9999))
 else:
 	new_sheet_name = date.today().strftime("%B %Y")
@@ -47,7 +53,7 @@ solution = re.compile(r"""
 	(.*,\d{2}) 					# (6) balance "n*,nn"
 	""", re.VERBOSE)
 
-with open(txns, 'r', encoding='utf-8') as txnsFile:
+with open(args.file, 'r', encoding='utf-8') as txnsFile:
 	
 	for row in txnsFile:
 		matches = (solution.findall(row))
