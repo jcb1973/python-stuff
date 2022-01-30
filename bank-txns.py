@@ -31,6 +31,7 @@ if (testing_mode == "TEST"):
 	new_sheet_name = date.today().strftime("%B %Y") + str(random.randint(1, 9999))
 else:
 	new_sheet_name = date.today().strftime("%B %Y")
+	
 sh.add_worksheet(new_sheet_name,rows=1, cols=9) 
 worksheet = sh.worksheet('title',new_sheet_name)
 
@@ -38,22 +39,22 @@ worksheet = sh.worksheet('title',new_sheet_name)
 worksheet.update_row(worksheet.rows, headers)
 
 solution = re.compile(r"""
-	(\d{4}.\d{2}.\d{2}\s)
-	(\d{4}.\d{2}.\d{2}\s)
-	(\S*?\s{1})
-	(.*\s)
-	(.*)
-	(\s.*)
-	(\s.*$)
+	(\d{4}.\d{2}.\d{2}\s) 		# (1) date YYYYMMDD, space
+	(\d{4}.\d{2}.\d{2}\s)	 	# (2) date YYYYMMDD, sapce
+	(\S*?\s{1}) 				# (3) non greedy verification string, space
+	(.*\s) 						# (4) greedy text string followed by space
+	(.*,\d{2})\s 				# (5) amount string "n*,nn" before balance, space
+	(.*,\d{2}) 					# (6) balance "n*,nn"
 	""", re.VERBOSE)
 
 with open(txns, 'r', encoding='utf-8') as txnsFile:
 	
 	for row in txnsFile:
 		matches = (solution.findall(row))
-
-		worksheet.add_rows(1) 
-		worksheet.update_row(worksheet.rows, list(matches[0]))
+		for match in matches:
+			print (match)
+			worksheet.add_rows(1) 
+			worksheet.update_row(worksheet.rows, list(matches[0]))
 
 # formatting
 model_cell = pygsheets.Cell('D1')
