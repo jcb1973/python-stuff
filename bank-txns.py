@@ -15,29 +15,21 @@ parser.add_argument('--file', required=True, help="File to work with")
 parser.add_argument('--testing', default=True, help="Testing mode - True | False")
 args = parser.parse_args()
 
-if args.verbose:
-    print(f"Args are {args.file} and {args.testing}")	
-    exit
-
+# which sheet are we using
 with open('config.txt') as f:
     conf = dict([line.split() for line in f])
-
+sheet = (conf["SHEET"])
 if (args.testing):
-	print ("testing mode only")
 	sheet = (conf["TESTING-SHEET"])
-else:
-	print ("live mode")
-	sheet = (conf["SHEET"])
 
+# authorize
 gc = pygsheets.authorize(client_secret='client_secret.json',)  
 sh = gc.open_by_key(sheet)
 
 # create a worksheet for the current month and switch to it
+new_sheet_name = date.today().strftime("%B %Y")
 if (args.testing):
 	new_sheet_name = date.today().strftime("%B %Y") + str(random.randint(1, 9999))
-else:
-	new_sheet_name = date.today().strftime("%B %Y")
-	
 sh.add_worksheet(new_sheet_name,rows=1, cols=9) 
 worksheet = sh.worksheet('title',new_sheet_name)
 
