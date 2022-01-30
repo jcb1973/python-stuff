@@ -50,11 +50,18 @@ solution = re.compile(r"""
 with open(txns, 'r', encoding='utf-8') as txnsFile:
 	
 	for row in txnsFile:
+		i = 0
 		matches = (solution.findall(row))
 		for match in matches:
-			print (match)
+			#
+			# convert string items 4 and 5 to signed floats in place
+			#
+			new_list = [float((v.replace("\xad", "-").replace(".","").replace(",","."))) 
+				if (i == 4) or (i == 5) 
+				# leave others as is
+				else v for i,v in enumerate(match)]
 			worksheet.add_rows(1) 
-			worksheet.update_row(worksheet.rows, list(matches[0]))
+			worksheet.update_row(worksheet.rows, new_list)
 
 # formatting
 model_cell = pygsheets.Cell('D1')
