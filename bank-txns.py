@@ -8,7 +8,7 @@ from pygsheets import custom_types
 from datetime import date
 import argparse
 
-headers = ["Bokföringsdatum", "Valutadatum", "Verifikationsnummer", "Text/mottagare ", "Belopp", "Saldo", "Invoice number", "VAT", "Notes"]		
+headers = ["Bokföringsdatum", "Valutadatum", "Verifikationsnummer", "Text/mottagare ", "Belopp", "Saldo", "Invoice number", "VAT", "Notes"]
 
 parser = argparse.ArgumentParser("Puts values from CSV file in spreadsheet (specified in 'config.txt')")
 parser.add_argument('--file', required=True, help="File to work with")
@@ -23,14 +23,14 @@ if (args.testing):
 	sheet = (conf["TESTING-SHEET"])
 
 # authorize
-gc = pygsheets.authorize(client_secret='client_secret.json',)  
+gc = pygsheets.authorize(client_secret='client_secret.json')
 sh = gc.open_by_key(sheet)
 
 # create a worksheet for the current month and switch to it
 new_sheet_name = date.today().strftime("%B %Y")
 if (args.testing):
 	new_sheet_name = date.today().strftime("%B %Y") + str(random.randint(1, 9999))
-sh.add_worksheet(new_sheet_name,rows=1, cols=9) 
+sh.add_worksheet(new_sheet_name,rows=1, cols=9)
 worksheet = sh.worksheet('title',new_sheet_name)
 
 # set the titles in the first row
@@ -46,20 +46,27 @@ solution = re.compile(r"""
 	""", re.VERBOSE)
 
 with open(args.file, 'r', encoding='utf-8') as txnsFile:
-	
+
 	for row in txnsFile:
 		matches = (solution.findall(row))
 		for match in matches:
 			#
 			# convert string items 4 and 5 in list to signed floats in place
 			#
-			new_list = [float((v.replace("\xad", "-").replace(".","").replace(",","."))) 
-				if (i == 4) or (i == 5) 
+			new_list = [float((v.replace("\xad", "-").replace(".","").replace(",",".")))
+				if (i == 4) or (i == 5)
 				# leave others as is
 				else v for i,v in enumerate(match)]
-			
-			worksheet.add_rows(1) 
-			worksheet.update_row(worksheet.rows, new_list)
+			if not args.testing:
+				worksheet.add_rows(1)
+				worksheet.update_row(worksheet.rows, new_list)
+			else:
+				print ("would add ")
+				print (new_list)
+
+		if args.testing:
+			print ("completed")
+			exit
 
 # formatting
 model_cell = pygsheets.Cell('D1')
