@@ -11,8 +11,8 @@ import argparse
 headers = ["Bokföringsdatum", "Valutadatum", "Verifikationsnummer", "Text/mottagare ", "Belopp", "Saldo", "Invoice number", "VAT", "Notes"]
 
 parser = argparse.ArgumentParser("Puts values from CSV file in spreadsheet (specified in 'config.txt')")
-parser.add_argument('--file', required=True, help="File to work with")
-parser.add_argument('--testing', default=True, help="Testing mode - True | False")
+parser.add_argument('--file', required=True)
+parser.add_argument('--testing', default=True)
 args = parser.parse_args()
 
 # which sheet are we using
