@@ -9,7 +9,7 @@ print (names)
 
 # slice list in two parts and append
 # last element in front of the sliced list
-       
+# i.e. shifts the whole list by one       
 # [names[-1]] --> converts last element of array into list
 # to append in front of sliced list
 # names[0:-1] --> list of elements except last element
