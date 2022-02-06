@@ -2,3 +2,4 @@
 *.txt
 *.csv
 *.env
+client_secret.json
