@@ -1,0 +1,16 @@
+{
+    "format": "png",
+    "payee": {
+        "value": "1230628701",
+        "editable": "False"
+    },
+    "amount": {
+      "value": "amount here supplied from command line",
+      "editable": "False"
+    },
+    "message": {
+      "value": "client name here supplied from command line",
+      "editable": "False"
+    },
+    "size": "600"
+}
