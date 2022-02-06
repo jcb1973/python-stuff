@@ -28,6 +28,7 @@ request_body = '''
 parser = argparse.ArgumentParser("Generate Swish QR code for client and amount")
 parser.add_argument('--client', required=True)
 parser.add_argument('--amount', required=True)
+parser.add_argument('--dir', required=False, default="/tmp/")
 args = parser.parse_args()
 
 client = args.client
@@ -40,7 +41,7 @@ body['amount']['value'] = amount
 r = requests.post(base_url + endpoint, json=body, headers=headers)
 
 if r.status_code == 200:
-    with open(client+'.png', 'wb') as out_file:
+    with open(args.dir + client+'.png', 'wb') as out_file:
         out_file.write(r.content)
 else:
     print (r)
