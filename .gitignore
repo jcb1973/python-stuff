@@ -3,3 +3,4 @@
 *.csv
 *.env
 client_secret.json
+*.png
