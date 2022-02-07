@@ -23,7 +23,6 @@ client = re.compile(r"""
 	""", flags=re.VERBOSE  | re.DOTALL)
 
 client_name = (client.match(pdf_text))
-print (client_name.group(2).strip())
 
 # find total 
 total = re.compile(r"""
@@ -34,7 +33,10 @@ total = re.compile(r"""
 	""", flags=re.VERBOSE | re.DOTALL)
 
 total_amount = (total.match(pdf_text))
-print (total_amount.group(5).strip().replace("\"", "").replace(",","."))
+
+print ('"' + client_name.group(2).strip() + '","' 
+	+ total_amount.group(5).strip().replace("\"", "").replace(",",".")
+	+'"')
     
 # closing the pdf file object 
 pdfFileObj.close() 
