@@ -5,12 +5,13 @@ import argparse
 base_url = 'https://mpc.getswish.net/qrg-swish'
 endpoint = '/api/v1/prefilled'
 headers = {'Content-type': 'application/json'}
+wheellab_swish_number = "1230628701"
 
 request_body = '''
 {
     "format": "png",
     "payee": {
-        "value": "1230628701",
+        "value": "wheellab-swish-number will be set here",
         "editable": "False"
     },
     "amount": {
@@ -37,6 +38,7 @@ amount = args.amount
 body = json.loads(request_body)
 body['message']['value'] = client
 body['amount']['value'] = amount
+body['payee']['value'] = wheellab_swish_number
 
 r = requests.post(base_url + endpoint, json=body, headers=headers)
 
