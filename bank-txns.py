@@ -12,14 +12,14 @@ headers = ["Bokföringsdatum", "Valutadatum", "Verifikationsnummer", "Text/motta
 
 parser = argparse.ArgumentParser("Puts values from CSV file in spreadsheet (specified in 'config.txt')")
 parser.add_argument('--file', required=True)
-parser.add_argument('--testing', default=True)
+parser.add_argument('--testing', default=False)
 args = parser.parse_args()
 
 # which sheet are we using
 with open('config.txt') as f:
     conf = dict([line.split() for line in f])
 sheet = (conf["SHEET"])
-if (args.testing):
+if (args.testing == True):
 	sheet = (conf["TESTING-SHEET"])
 
 # authorize
